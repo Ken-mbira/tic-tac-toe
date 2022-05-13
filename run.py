@@ -1,24 +1,52 @@
 # Write a tic tac toe game in python
+from itertools import combinations
 from time import sleep
-from tokenize import Number
+import statistics
+
+winning_combinations = [[0,1,2],[3,4,5],[6,7,8],[0,3,6,],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 
 class Player:
     name = ""
     symbol = ""
-    move = 0
+    moves = []
 
-    def __init__(self,name,symbol):
+    def __init__(self,name,symbol,moves):
         self.name = name
         self.symbol = symbol
+        self.moves = moves
 
-    def make_move(self):
+    def make_move(self,possibles):
         move = input(f"""Player {self.name}, make your move : """)
-        if(isinstance(int(move),int) and 0 <=  int(move) < 9):
-            return move
+        if(move.isnumeric() and int(move) in possibles):
+            self.moves.append(int(move))
+            return int(move)
         else:
             print("That was not a valid move")
-            self.make_move()
-                
+            return self.make_move(possibles)
+
+    def check_winner(self):
+        self.moves.sort()
+        if(len(self.moves) >= 3):
+            isWinner = False
+            for i in range(0,len(self.moves)):
+                difference = self.moves[i+1] - self.moves[i]
+                try:
+                    if((self.moves[i+2] - self.moves[i+1]) == difference):
+                        isWinner = True
+                        break
+                    else:
+                        continue
+                except:
+                    break
+            return isWinner
+
+        else:
+            return False
+            
+            
+
+
+
 
 
 def main():
@@ -28,30 +56,45 @@ def main():
         winner = None
 
         board = [
-            ["","",""],
-            ["","",""],
-            ["","",""]
+            "","","",
+            "","","",
+            "","",""
         ]
 
         print("Welcome To Tic Tac Toe")
 
-        player1 = Player(name="",symbol="")
-        player2 = Player(name="",symbol="")
+        player1 = Player(name=input("Player 1, enter your name : "),symbol=input("Player 1, enter your symbol : "),moves=[])
+        player2 = Player(name=input("Player 2, enter your name : "),symbol=input("Player 2, enter your symbol : "),moves=[])
 
-        player1.name = input("Player 1, please enter your name : ")
-        player1.symbol = input("Player 1, please enter your symbol : ")
-        player2.name = input("Player 2, please enter your name : ")
-        player2.symbol = input("Player 2, please enter your symbol : ")
-
-        if player1.name == player2.name or player1.symbol == player2.symbol:
+        if player1.symbol == player2.symbol:
             print("Please enter different names and symbols")
             break
 
-        while counter < 9:
-            player_one_move = player1.make_move()
-            player_two_move = player2.make_move()
+        while counter < 5:
+            #Find possible values in the array
+            possibles = []
+            for value in range(0,len(board)):
+                if board[value] == "":
+                    possibles.append(value)
 
-            break
+            player_one_move = player1.make_move(possibles)
+            possibles.remove(player_one_move)
+            board[player_one_move] = player1.symbol
+
+            if(player1.check_winner()):
+                print("Player 1 is the winner")
+                break
+
+            player_two_move = player2.make_move(possibles)
+            board[player_two_move] = player2.symbol
+
+            if(player2.check_winner()):
+                print("Player 2 is the winner")
+                break
+
+
+            print(board)
+            counter += 1
 
 if __name__ == "__main__":
     main()
