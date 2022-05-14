@@ -29,6 +29,30 @@ def check_win_row(board):
             return i[0]
 
     return False
+
+def check_win_diagonal(board):
+    right_to_left = []
+    left_to_right = []
+
+    right_left_increment = 0
+    left_right_increment = 2
+
+    for col in board:
+        right_to_left.append(col[right_left_increment])
+        right_left_increment += 1
+
+    for col in board:
+        left_to_right.append(col[left_right_increment])
+        left_right_increment -= 1
+
+    for i in [right_to_left,left_to_right]:
+        if(i[0] == i[1] == i[2] and i[0] != ""):
+            return i[0]    
+
+    return False
+
+    
+
             
 
 
@@ -82,9 +106,9 @@ def main():
 
         while counter <= 5:
             board = player1.make_move(board)
-            print(check_win_row(board))
+            print(check_win_diagonal(board))
             board = player2.make_move(board)
-            print(check_win_row(board))
+            print(check_win_diagonal(board))
             print(board)
             
             counter += 1
