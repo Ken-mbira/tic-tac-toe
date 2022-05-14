@@ -67,16 +67,28 @@ class Player:
 
     def make_move(self,board):
         move = input(f"""Player {self.name}, make your move : """)
-        if(move.isnumeric() and len(move) == 2 and int(move) <= 22):
+        try:
             if(board[int(move[0])][int(move[1])] == ""):
                 board[int(move[0])][int(move[1])] = self.symbol
                 return board
             else:
                 print("That move has already been made!")
                 return self.make_move(board)
-        else:
+        except:
             print("That was not a valid move")
             return self.make_move(board)
+
+    def run_checks(self,board):
+        if(check_win_col(board)):
+            return True
+
+        if(check_win_row(board)):
+            return True
+
+        if(check_win_diagonal(board)):
+            return True
+
+        return False
             
             
 
@@ -95,7 +107,7 @@ def main():
             ["","",""]
         ]
 
-        print("========Welcome To Tic Tac Toe===========")
+        print("======== Welcome To Tic Tac Toe ===========")
 
         player1 = Player(name=input("Player 1, enter your name : "),symbol=input("Player 1, enter your symbol : "))
         player2 = Player(name=input("Player 2, enter your name : "),symbol=input("Player 2, enter your symbol : "))
@@ -106,9 +118,13 @@ def main():
 
         while counter <= 5:
             board = player1.make_move(board)
-            print(check_win_diagonal(board))
+            if(player1.run_checks(board)):
+                print(f"""{player1.name} is the winner""")
+                break
             board = player2.make_move(board)
-            print(check_win_diagonal(board))
+            if(player2.run_checks(board)):
+                print(f"""{player2.name} is the winner""")
+                break
             print(board)
             
             counter += 1
