@@ -1,10 +1,20 @@
 # Write a tic tac toe game in python
 from itertools import combinations
-from multiprocessing.dummy import Array
 from time import sleep
 import statistics
 
 winning_combinations = [[0,1,2],[3,4,5],[6,7,8],[0,3,6,],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+
+def check_win_col(board) -> bool:
+    for i in board:
+        if( i[0] == i[1] == i[2] and i[0] != ""):
+            return True
+        else:
+            continue
+
+    return False
+
+
 
 class Player:
     name = ""
@@ -53,9 +63,11 @@ def main():
             print("Please enter different names and symbols")
             break
 
-        while counter <= 2:
+        while counter <= 5:
             board = player1.make_move(board)
+            print(check_win_col(board))
             board = player2.make_move(board)
+            print(check_win_col(board))
             print(board)
             
             counter += 1
