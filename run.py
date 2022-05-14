@@ -14,6 +14,23 @@ def check_win_col(board):
 
     return False
 
+def check_win_row(board):
+    row_one = []
+    row_two = []
+    row_three = []
+
+    for col in board:
+        row_one.append(col[0])
+        row_two.append(col[1])
+        row_three.append(col[2])
+
+    for i in [row_one,row_two,row_three]:
+        if(i[0] == i[1] == i[2] and i[0] != ""):
+            return i[0]
+
+    return False
+            
+
 
 
 class Player:
@@ -65,10 +82,9 @@ def main():
 
         while counter <= 5:
             board = player1.make_move(board)
-            if(check_win_col(board)):
-                print(check_win_col(board))
+            print(check_win_row(board))
             board = player2.make_move(board)
-            print(check_win_col(board))
+            print(check_win_row(board))
             print(board)
             
             counter += 1
