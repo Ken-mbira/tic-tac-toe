@@ -5,10 +5,10 @@ import statistics
 
 winning_combinations = [[0,1,2],[3,4,5],[6,7,8],[0,3,6,],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 
-def check_win_col(board) -> bool:
+def check_win_col(board):
     for i in board:
         if( i[0] == i[1] == i[2] and i[0] != ""):
-            return True
+            return i[0]
         else:
             continue
 
@@ -65,7 +65,8 @@ def main():
 
         while counter <= 5:
             board = player1.make_move(board)
-            print(check_win_col(board))
+            if(check_win_col(board)):
+                print(check_win_col(board))
             board = player2.make_move(board)
             print(check_win_col(board))
             print(board)
